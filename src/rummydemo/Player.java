@@ -27,10 +27,10 @@ public class Player {
 		this.list_of_cards = list_of_cards;
 		System.out.println(list_of_cards.size());
 		//ArrayList<Card> c= new ArrayList<Card>();
-		for(int i=0; i<7; i++)
+		/*for(int i=0; i<7; i++)
 		{			
 			System.out.println("ListofCards"+list_of_cards.get(i).CardName());		
-		}
+		}*/
 	
 	}
 	public int getCoins() {

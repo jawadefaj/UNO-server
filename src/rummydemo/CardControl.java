@@ -63,12 +63,12 @@ public class CardControl {
 			}
 		}
 		
-		for(int i=0; i<cardList.size(); i++)
+		/*for(int i=0; i<cardList.size(); i++)
 		{
 			System.out.println(cardList.get(i).CardName());
-		}
+		}*/
 			
-		System.out.println(cardList.size());
+		//System.out.println("Card Initialize and cardlist size is  "+cardList.size());
 		cardShuffle();
 	}
 	
@@ -77,16 +77,15 @@ public class CardControl {
 	{
 		Collections.shuffle(cardList);
 		
-		for(int i=0; i<cardList.size(); i++)
+		/*for(int i=0; i<cardList.size(); i++)
 		{
 			System.out.println(cardList.get(i).CardName());
-		}
+		}*/
 		System.out.println("Card Shuffled");
 	}
 	
-	public void distributeCards(ArrayList<Card> c, ArrayList<Player> p)
+	public ArrayList<Player> distributeCards( ArrayList<Player> p)
 	{
-		int k =1;
 		for(int i=0; i<p.size(); i++)
 		{
 			
@@ -100,7 +99,7 @@ public class CardControl {
 			
 		}
 		
-		for(int i=0; i<p.size(); i++)
+		/*for(int i=0; i<p.size(); i++)
 		{
 			System.out.println(p.get(i).getName() + " got the following cards: ");
 			for(int j=0; j<7; j++)
@@ -108,7 +107,7 @@ public class CardControl {
 				System.out.println(p.get(i).getList_of_cards().get(j).CardName());
 			}
 			//System.out.println("Lets find out the error");
-		}
+		}*/
 		while(!cardList.isEmpty())
 		{
 			if(cardList.get(0).getColor_code() == 'W' || cardList.get(0).getCard_no() >= 10)
@@ -123,6 +122,8 @@ public class CardControl {
 		}
 		setDiscardpile( cardList.remove(0));
 		System.out.println("Discard Pile Card: " + getDiscardpile().CardName());
+		return p;
+		
 	}
 	
 	public void isEmptyCardList()
