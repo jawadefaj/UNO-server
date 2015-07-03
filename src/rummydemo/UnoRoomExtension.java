@@ -29,7 +29,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
         this.izone = izone;
         this.gameRoom = room;
         //GAME_STATUS = CardsConstants.STOPPED;
-        System.out.println("Zone app key "+izone.getAppKey()+ "Turnbased Room name "+ room.getName()+ " turnroom turntime "+ room.getTurnTime() );
+        //System.out.println("Zone app key "+izone.getAppKey()+ "Turnbased Room name "+ room.getName()+ " turnroom turntime "+ room.getTurnTime() );
         
     }
 	@Override
@@ -70,7 +70,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			 //GAME_STATUS = CardsConstants.RUNNING;
 			 k=0;
 			 //CardControl CardCon= new CardControl();
-			 System.out.println(gameRoom.getJoinedUsers().size()+"<><><>"+ gameRoom.getMaxUsers());
+			 //System.out.println(gameRoom.getJoinedUsers().size()+"<><><>"+ gameRoom.getMaxUsers());
 			 for(int i=0; i< gameRoom.getMaxUsers(); i++)
 			 {
 				 Player p= new Player();
@@ -85,26 +85,33 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			 CardControl CardCon= new CardControl();
 			 CardCon.initialize();
 			 PlayerList = CardCon.distributeCards(PlayerList);
+			 int j=0;
 			 for (Player player : PlayerList) {
-				System.out.println("this is the player name"+player.getName());
+				//System.out.println("this is the player name"+player.getName());
 				msg="$$";
 				for(int i=0;i<player.getList_of_cards().size();i++)
 				{
-					System.out.println(player.getList_of_cards().get(i).CardName());
+					//System.out.println(player.getList_of_cards().get(i).CardName());
 					msg= msg + player.getList_of_cards().get(i).CardName()+"##";
 				}
+				//System.out.println(msg);
+				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", msg, gameRoom);
+				j++;
+				
+				
 				//gameRoom.getJoinedUsers().get(0).SendChatNotification("Server", "this is a string", gameRoom);
 				//gameRoom.getJoinedUsers().get(1).SendChatNotification("Server", "this is a string", gameRoom);
 				//gameRoom.BroadcastChat("MasterServer", "Just chatting");
 			}
-			 for(int i=0; i<2; i++)
-			 {
-			 	 gameRoom.getJoinedUsers().get(i).SendChatNotification("Server", msg, gameRoom);
-			 }
+			gameRoom.startGame("game");
 		 }
 		 
 	 }
-	 
+	 @Override
+	    public void handleMoveRequest(IUser sender, String moveData, HandlingResult result){
+		 
+		 
+	 }
 	
 
 	

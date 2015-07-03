@@ -103,7 +103,7 @@ public class RummyZoneExtension extends BaseZoneAdaptor {
         }*/
     	if(room.isTurnBased())
     	{
-    		//System.out.println("Turn based room creating after that Uno Room Extension is creating");
+    		System.out.println("Turn based room creating after that Uno Room Extension is creating");
     		//System.out.println("User name "+ user.getName()+  " Room " + user.getLocation()+" Room Name "+room.getName()+" Result "+ result.toString());
     		room.setAdaptor(new UnoRoomExtension(izone, (ITurnBasedRoom)room));
     	}
