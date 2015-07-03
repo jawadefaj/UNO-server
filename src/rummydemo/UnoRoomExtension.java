@@ -96,6 +96,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				}
 				//System.out.println(msg);
 				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", msg, gameRoom);
+				
 				j++;
 				
 				
