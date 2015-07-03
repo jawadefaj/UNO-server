@@ -23,6 +23,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	private ITurnBasedRoom gameRoom;
 	private byte GAME_STATUS;
 	public ArrayList<Player> PlayerList= new ArrayList<Player>();
+	private String discard;
 	
 
 	public UnoRoomExtension(IZone izone, ITurnBasedRoom room){
@@ -96,7 +97,8 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				}
 				//System.out.println(msg);
 				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", msg, gameRoom);
-				
+				discard = "D" + CardCon.getDiscardpile().CardName();
+				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", discard, gameRoom);
 				j++;
 				
 				
