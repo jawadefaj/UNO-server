@@ -15,7 +15,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	
 	private int k=1;
 	String msg;
-	
+	private int curPlayerIndex, index;
 	
 	
 	
@@ -23,6 +23,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	private ITurnBasedRoom gameRoom;
 	private byte GAME_STATUS;
 	public ArrayList<Player> PlayerList= new ArrayList<Player>();
+	public ArrayList<Card> possibleMoves= new ArrayList<Card>();
 	private String discard;
 	
 
@@ -58,8 +59,78 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				}
 			}	
 		}*/
+		
+		
+		//Avik 7.4.2015
+		System.out.println(sender.getName()+ message);
+		curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
+		
+		if(message.equals("PM"))
+		{
+			GameLogic gm = new GameLogic();
+			Card ob = new Card();
+			
+			ob.setColor_code(message.charAt(0));
+			ob.setCard_no(Integer.parseInt(message.substring(1)));
+			
+			int rotation = gm.getRotation(ob, gm.curRotation());
+			index = getCurPlayerIndex(curPlayerIndex);	
+			
+			possibleMoves = gm.possibleMoves(ob, PlayerList.get(index));
+			String mesg = "*";
+			for(int i=0; i<possibleMoves.size(); i++)
+			{
+				mesg = msg + possibleMoves.get(i) + "/";
+			}
+			gameRoom.getJoinedUsers().get(index).SendChatNotification("Server", mesg, gameRoom);
+		}
+		else if(message.equals("DC"))
+		{
+			String dc = "&";
+			Card obc = new Card();
+			CardControl obcc = new CardControl();
+			obc = obcc.cardList.remove(0);
+			PlayerList.get(curPlayerIndex).addCard(obc);
+			dc = dc + obc.CardName();
+			gameRoom.getJoinedUsers().get(curPlayerIndex).SendChatNotification("Server", dc, gameRoom);
+			
+		}
+		
+		
+		
+		
+		
 	}
 	
+	public int getCurPlayerIndex(int rotation)
+	{
+		Player obP = new Player();
+		int nextPlayerIndex = 0;
+		
+		if(rotation == 1)
+		{
+			if(curPlayerIndex == gameRoom.getJoinedUsers().size())
+			{
+				nextPlayerIndex=0;
+			}
+			else{
+				nextPlayerIndex = curPlayerIndex +1;
+			}
+		}
+		
+		else if(rotation == -1)
+		{
+			if(curPlayerIndex == 0)
+			{
+				nextPlayerIndex=gameRoom.getJoinedUsers().size();
+			}
+			else{
+				nextPlayerIndex = curPlayerIndex - 1;
+			}
+		}
+		
+		return nextPlayerIndex;
+	}
 	
 	 @Override
 	    public void onTimerTick(long time){
@@ -112,7 +183,19 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	 }
 	 @Override
 	    public void handleMoveRequest(IUser sender, String moveData, HandlingResult result){
-		 
+		 System.out.println(sender.getName() +" send data "+ moveData);
+		 for(int i=0; i<PlayerList.size(); i++)
+		 {
+			 if(PlayerList.get(i).getName()== sender.getName())
+			 {
+				/* Card c= new Card();
+				 char CardColor = moveData[0];
+				 c.se
+				 
+				 PlayerList.get(i).getList_of_cards().remove()
+				 */
+			 }
+		 }
 		 
 	 }
 	

@@ -25,6 +25,11 @@ public class GameLogic {
 		return Rotation;
 	}
 	
+	public int curRotation()
+	{
+		return this.Rotation;
+	}
+	
 	public ArrayList<Card> possibleMoves(Card DiscardPile, Player curPlayer)
 	{
 		ArrayList<Card> possibleCards = new ArrayList<Card>();
