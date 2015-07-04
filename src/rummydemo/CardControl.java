@@ -22,7 +22,7 @@ public class CardControl {
 	private int j;
 	public ArrayList<ArrayList<Card>> tempCardarrayList = new ArrayList<ArrayList<Card>>();
 	public ArrayList<Card> templist = new ArrayList<Card>();
-	public ArrayList<Card> cardList = new ArrayList<Card>();
+	public static ArrayList<Card> cardList = new ArrayList<Card>();
 	public ArrayList<Card> discardpilelist = new ArrayList<Card>();
 	public ArrayList<Player> playerList = new ArrayList<Player>();
 	public char[] color = {'B', 'G', 'Y', 'R', 'W'};

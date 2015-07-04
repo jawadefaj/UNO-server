@@ -31,8 +31,19 @@ public class Player {
 		{			
 			System.out.println("ListofCards"+list_of_cards.get(i).CardName());		
 		}*/
-	
 	}
+	
+	public void remove_Cards(Card card)
+	{
+		for(int i=0; i<list_of_cards.size(); i++)
+		{
+			if(list_of_cards.get(i).CardName().equals(card.CardName()))
+			{
+				list_of_cards.remove(i);
+			}
+		}
+	}
+	
 	public int getCoins() {
 		return coins;
 	}
