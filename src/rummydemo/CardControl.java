@@ -7,7 +7,7 @@ import java.util.Collections;
 public class CardControl {
 	//*lets assume there are four players
 	public Card[] drawpile;
-	private Card discardpile;
+	public static Card discardpile;
 	public Card getDiscardpile() {
 		return discardpile;
 	}
@@ -24,7 +24,7 @@ public class CardControl {
 	public ArrayList<Card> templist = new ArrayList<Card>();
 	public static ArrayList<Card> cardList = new ArrayList<Card>();
 	public ArrayList<Card> discardpilelist = new ArrayList<Card>();
-	public ArrayList<Player> playerList = new ArrayList<Player>();
+	//public static ArrayList<Player> playerList = new ArrayList<Player>();
 	public char[] color = {'B', 'G', 'Y', 'R', 'W'};
 	
 	

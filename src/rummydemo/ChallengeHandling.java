@@ -6,6 +6,8 @@ public class ChallengeHandling {
 	private String challengeType; //uno challenge,wild+4 card challenge
 	private Player challenger;
 	private Player challengedPlayer;
+	public ArrayList<Card> draw2card = new ArrayList<Card>();
+	private Card card;
 	
 	public String getChallengeType() {
 		return challengeType;
@@ -36,19 +38,23 @@ public class ChallengeHandling {
 		//UNO Challenge
 		if(challengeTyp.equals("UNO"))
 		{
-			//Challenged player has to draw four cards			
+			//Challenged player has to draw four cards
+			
 			for(int i=0; i<2; i++)
 			{
 				Challenged.addCard(obCard.cardList.remove(0));
+				
 			}
 		}
 		
-		else if(challengeTyp == "REVERSE")
+		else if(challengeTyp == "PLUS2")
 		{
 			//If there is +2 card in discard pile,then the player has to draw two cards			
 			for(int i=0; i<2; i++)
 			{
-				Challenged.addCard(obCard.cardList.remove(0));
+				card = obCard.cardList.remove(0);
+				Challenged.addCard(card);
+				draw2card.add(card);
 			}
 		}
 		

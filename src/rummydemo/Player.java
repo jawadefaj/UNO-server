@@ -33,11 +33,11 @@ public class Player {
 		}*/
 	}
 	
-	public void remove_Cards(Card card)
+	public void remove_Cards(String card)
 	{
 		for(int i=0; i<list_of_cards.size(); i++)
 		{
-			if(list_of_cards.get(i).CardName().equals(card.CardName()))
+			if(list_of_cards.get(i).CardName().equals(card))
 			{
 				list_of_cards.remove(i);
 			}

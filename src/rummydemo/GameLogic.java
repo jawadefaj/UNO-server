@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 
 public class GameLogic {
-	public int Rotation = -1; // Clockwise rotation = -1 and anti clockwise rotation =1
+	public static int Rotation = -1; // Clockwise rotation = -1 and anti clockwise rotation =1
 	
 	/*public GameLogic() {
 		super();
@@ -12,43 +12,69 @@ public class GameLogic {
 
 
 
-	public int getRotation(Card DiscardPile, int curRotation )
+	public int getRotation(String DiscardPile)
 	{
 		CardControl obcardControl = new CardControl();
-		if(DiscardPile.getCard_no() == 11)
+		Card card = new Card();
+		card.setColor_code(DiscardPile.charAt(0));
+		card.setCard_no(Integer.parseInt(DiscardPile.substring(1)));
+		if(card.getCard_no() == 11)
 		{
-			Rotation = curRotation*(-1);
+			Rotation = Rotation*(-1);
 		}
 		System.out.println("Inside the get rotation " + Rotation);
 		return Rotation;
 	}
 	
+	public int getNextPlayerIndex(int rotation, int curPlayerIndex)
+	{
+		Player obP = new Player();
+		int nextPlayerIndex = 0;
+		int size = UnoRoomExtension.PlayerList.size();
+		System.out.println("player list size " + size);
+		
+		if(rotation == 1)
+		{
+			if(curPlayerIndex == size-1)
+			{
+				nextPlayerIndex=0;
+			}
+			else{
+				nextPlayerIndex = curPlayerIndex + 1;
+			}
+		}
+		
+		else if(rotation == -1)
+		{
+			if(curPlayerIndex == 0)
+			{
+				nextPlayerIndex = size-1;
+			}
+			else{
+				nextPlayerIndex = curPlayerIndex - 1;
+			}
+		}
+		
+		return nextPlayerIndex;
+		
+		
+	}
 	
-	
-	public ArrayList<Card> possibleMoves(Card DiscardPile, Player curPlayer)
+	public ArrayList<Card> possibleMoves(Player curPlayer)
 	{
 		ArrayList<Card> possibleCards = new ArrayList<Card>();
 		ArrayList<Card> curPlayerCards = new ArrayList<Card>();
 		ArrayList<Integer> possibleCardIndex = new ArrayList<Integer>();
 		curPlayerCards = curPlayer.getList_of_cards();
+		CardControl cardControl = new CardControl();
+		System.out.println("Inside possible move");
 		
-		/*if(DiscardPile.getCard_no() == 12)
-		{
-			ChallengeHandling obCH = new ChallengeHandling();
-			obCH.punishment("REVERSE", null, curPlayer);
-		}
-		
-		else if(DiscardPile.getCard_no() == 2 && DiscardPile.getColor_code() == 'W')
-		{
-			ChallengeHandling obCH = new ChallengeHandling();
-			obCH.punishment("WILD4", null, curPlayer);
-		}
-		*/
+		System.out.println("Discard in possible move " + cardControl.getDiscardpile().CardName());
 		
 		for(int i=0; i<curPlayerCards.size(); i++)
 		{
-			if(DiscardPile.getCard_no() == curPlayerCards.get(i).getCard_no() || 
-					DiscardPile.getColor_code() == curPlayerCards.get(i).getColor_code() || 
+			if(cardControl.getDiscardpile().getCard_no() == curPlayerCards.get(i).getCard_no() || 
+					cardControl.getDiscardpile().getColor_code() == curPlayerCards.get(i).getColor_code() || 
 					curPlayerCards.get(i).getColor_code() == 'W')
 			{
 				possibleCards.add(curPlayerCards.get(i));
