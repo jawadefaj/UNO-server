@@ -110,7 +110,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				nextPlayerIndex=0;
 			}
 			else{
-				nextPlayerIndex = curPlayerIndex +1;
+				nextPlayerIndex = curPlayerIndex + 1;
 			}
 		}
 		
@@ -176,6 +176,24 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				//gameRoom.BroadcastChat("MasterServer", "Just chatting");
 			}
 			gameRoom.startGame("game");
+			
+			
+			// for the first player possible moves 
+			
+			Card c = new Card();
+			c = CardCon.getDiscardpile();
+			ArrayList<Card> Pcards = new ArrayList<Card>();
+			GameLogic G = new GameLogic();
+			Pcards = G.possibleMoves(c, PlayerList.get(0));
+			String cards= "*";
+			for (Card card : Pcards) 
+			{
+				cards = cards + card.CardName() + "/";
+			}
+			
+			System.out.println("First player possible Moves::" + cards);
+			System.out.println("Whoes turn " + gameRoom.getNextTurnUser().getName());
+			gameRoom.getJoinedUsers().get(0).SendChatNotification("Server", cards, gameRoom);
 		 }
 		 
 	 }

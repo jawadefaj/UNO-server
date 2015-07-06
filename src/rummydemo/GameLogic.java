@@ -52,7 +52,7 @@ public class GameLogic {
 					curPlayerCards.get(i).getColor_code() == 'W')
 			{
 				possibleCards.add(curPlayerCards.get(i));
-				System.out.println("Current player ccards "+curPlayerCards.get(i).CardName());
+				//System.out.println("Current player ccards "+curPlayerCards.get(i).CardName());
 			}
 		}
 		
