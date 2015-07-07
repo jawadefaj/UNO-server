@@ -15,8 +15,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 	String appconfigPath = System.getProperty("user.dir")+System.getProperty("file.separator")+"AppConfig.json";
-	System.out.println("Server Start");
-	System.out.println("Jawad");
+	//System.out.println("Server Start");
+	//System.out.println("Jawad");
 	boolean started = AppWarpServer.start(new RummyServerExtension(), appconfigPath);
         if(!started){
             throw new Exception("AppWarpServer did not start. See logs for details.");

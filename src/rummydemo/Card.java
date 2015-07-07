@@ -46,6 +46,12 @@ public class Card {
 	{
 		return "" + getColor_code() + getCard_no();
 	}
-	
+	public Card MakeCard(String CardName)
+	{
+		Card c = new Card();
+		c.setColor_code(CardName.charAt(0));
+		c.setCard_no(Integer.parseInt(CardName.substring(1)));
+		return c;
+	}
 	
 }

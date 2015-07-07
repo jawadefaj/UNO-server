@@ -7,14 +7,16 @@ import java.util.Collections;
 public class CardControl {
 	//*lets assume there are four players
 	public Card[] drawpile;
-	public static Card discardpile;
+	public Card discardpile;
 	public Card getDiscardpile() {
+		System.out.println("Inside get discard pile " + discardpile.CardName());
 		return discardpile;
 	}
 
 	public void setDiscardpile(Card discardpile) {
 		this.discardpile = discardpile;
 		discardpilelist.add(discardpile);
+		System.out.println("Inside sET discard pile " + discardpile.CardName());
 	}
 
 	public int total_player;
@@ -22,7 +24,8 @@ public class CardControl {
 	private int j;
 	public ArrayList<ArrayList<Card>> tempCardarrayList = new ArrayList<ArrayList<Card>>();
 	public ArrayList<Card> templist = new ArrayList<Card>();
-	public static ArrayList<Card> cardList = new ArrayList<Card>();
+	//public static ArrayList<Card> cardList = new ArrayList<Card>();
+	public ArrayList<Card> cardList = new ArrayList<Card>();
 	public ArrayList<Card> discardpilelist = new ArrayList<Card>();
 	//public static ArrayList<Player> playerList = new ArrayList<Player>();
 	public char[] color = {'B', 'G', 'Y', 'R', 'W'};
@@ -112,7 +115,7 @@ public class CardControl {
 		{
 			if(cardList.get(0).getColor_code() == 'W' || cardList.get(0).getCard_no() >= 10)
 			{
-				System.out.println("not empty" + cardList.get(0).CardName());
+				//System.out.println("not empty" + cardList.get(0).CardName());
 				cardList.add(cardList.remove(0));
 				//System.out.println("Not empty");
 				continue;
@@ -121,7 +124,7 @@ public class CardControl {
 				break;
 		}
 		setDiscardpile( cardList.remove(0));
-		System.out.println("Discard Pile Card: " + getDiscardpile().CardName());
+		//System.out.println("Discard Pile Card: " + getDiscardpile().CardName());
 		return p;
 		
 	}

@@ -63,6 +63,7 @@ public class ChallengeHandling {
 		{		
 			for(int i=0; i<4; i++)
 			{
+				
 				Challenged.addCard(obCard.cardList.remove(0));
 			}
 		}

@@ -25,7 +25,7 @@ public class Player {
 
 	public void setList_of_cards(ArrayList<Card> list_of_cards) {
 		this.list_of_cards = list_of_cards;
-		System.out.println(list_of_cards.size());
+		//System.out.println(list_of_cards.size());
 		//ArrayList<Card> c= new ArrayList<Card>();
 		/*for(int i=0; i<7; i++)
 		{			

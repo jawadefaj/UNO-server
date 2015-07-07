@@ -15,7 +15,8 @@ import javassist.util.proxy.RuntimeSupport;
 
 public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	
-	private int k=1;
+	/*
+	public int k=1;
 	String msg;
 	public int curPlayerIndex;
 	public static int index ;
@@ -29,20 +30,30 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	
 	private String discard;
 	private String dscrd;
+	*/
+	
+	private IZone izone;
+	private ITurnBasedRoom gameRoom;
+	public String DisCardPile;
+	public ArrayList<Player> PlayerList= new ArrayList<Player>();
+	public int curPlayerIndex;
+	public Boolean StartBool = true;
+	public CardControl CardCon;
+	
 	
 	public UnoRoomExtension(IZone izone, ITurnBasedRoom room){
         this.izone = izone;
         this.gameRoom = room;
-        //GAME_STATUS = CardsConstants.STOPPED;
-        //System.out.println("Zone app key "+izone.getAppKey()+ "Turnbased Room name "+ room.getName()+ " turnroom turntime "+ room.getTurnTime() );
         
     }
+	
+	
 	@Override
     public void handleChatRequest(IUser sender, String message, HandlingResult result){
 		
 		System.out.println(sender.getName()+ message);
 		
-		curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
+		/*curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
 		
 		if(message.substring(0, 2).equals("PM"))
 		{
@@ -50,11 +61,20 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			GameLogic gm = new GameLogic();
 			Player obp = new Player();
 			dscrd = message.substring(2);
-			System.out.println(dscrd);
+			//System.out.println(dscrd);
 			Card ob = new Card();
 			
-			ob.setColor_code(message.substring(2,3).charAt(0));
-			ob.setCard_no(Integer.parseInt(message.substring(3))); 
+			if(message.substring(2,3).charAt(0) != 'W')
+			{
+				ob.setColor_code(message.substring(2,3).charAt(0));
+				ob.setCard_no(Integer.parseInt(message.substring(3))); 
+			}
+			
+			else if(message.substring(2,3).charAt(0) == 'W')
+			{
+				ob.setColor_code(message.substring(2,3).charAt(0));
+				ob.setCard_no(Integer.parseInt(message.substring(3,3))); 
+			}
 			
 			
 			int rotation = gm.getRotation(dscrd);
@@ -63,7 +83,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			//PlayerList.get(curPlayerIndex).getList_of_cards().remove(ob);
 		
 				posblMov = gm.possibleMoves(PlayerList.get(index));
-				System.out.println("In else");
+				//System.out.println("In else");
 				String mesg = "*";
 				for(int i=0; i<posblMov.size(); i++)
 				{
@@ -74,7 +94,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				
 				if(dscrd.charAt(1) == '1' && dscrd.charAt(2) == '2')
 				{
-					 System.out.println("Insind draw 2 card cond");
+					// System.out.println("Insind draw 2 card cond");
 					 ChallengeHandling chHandle = new ChallengeHandling();
 					 Player player = new Player();
 					 for(int i=0; i<gameRoom.getJoinedUsers().size(); i++)
@@ -91,7 +111,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 					 {
 						 drwcrd += chHandle.draw2card.get(i).CardName() + "##";
 					 }
-					 System.out.println("Draw cards" + drwcrd);
+					 //System.out.println("Draw cards" + drwcrd);
 					 gameRoom.getJoinedUsers().get(index).SendChatNotification("Server", drwcrd, gameRoom);
 				} 
 				 
@@ -116,7 +136,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 					 }
 					 System.out.println("Draw cards" + drwcrd);
 					 gameRoom.getJoinedUsers().get(index).SendChatNotification("Server", drwcrd, gameRoom);
-				} */
+				} 
 		//	}
 		}
 		
@@ -132,6 +152,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			gameRoom.getJoinedUsers().get(curPlayerIndex).SendChatNotification("Server", dc, gameRoom);
 			
 		}
+		*/
 	}
 	
 	
@@ -140,10 +161,10 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 		
 		 //System.out.println("Nothing else matters");
 		 //System.out.println(gameRoom.getJoinedUsers().size()+" ....."+ gameRoom.getMaxUsers());
-		 if( gameRoom.getJoinedUsers().size() == gameRoom.getMaxUsers() && k==1)
+		 if( gameRoom.getJoinedUsers().size() == gameRoom.getMaxUsers() && StartBool)
 		 {
 			 //GAME_STATUS = CardsConstants.RUNNING;
-			 k=0;
+			 StartBool = false;
 			 //CardControl CardCon= new CardControl();
 			 //System.out.println(gameRoom.getJoinedUsers().size()+"<><><>"+ gameRoom.getMaxUsers());
 			 for(int i=0; i< gameRoom.getMaxUsers(); i++)
@@ -152,15 +173,22 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				 p.setName(gameRoom.getJoinedUsers().get(i).getName());
 				 PlayerList.add(p);
 			 }
-			/* for (Player player : PlayerList) {
+			 for (Player player : PlayerList) {
 				 System.out.println(player.getName());
 				
-			}*/
+			}
 			 
-			 CardControl CardCon= new CardControl();
+			 CardCon= new CardControl();
 			 CardCon.initialize();
 			 PlayerList = CardCon.distributeCards(PlayerList);
+			 System.out.println("Discard pile !");
+			 System.out.println("Discard pile" +CardCon.getDiscardpile().CardName());
+			 DisCardPile = CardCon.getDiscardpile().CardName();
+			 
+			 System.out.println("After distribute card");
 			 int j=0;
+			 String msg;
+			 String discard;
 			 for (Player player : PlayerList)
 			 {
 				//System.out.println("this is the player name"+player.getName());
@@ -172,7 +200,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				}
 				//System.out.println(msg);
 				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", msg, gameRoom);
-				discard = "D" + CardCon.getDiscardpile().CardName();
+				discard = "D" + DisCardPile;
 				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", discard, gameRoom);
 				j++;
 				
@@ -182,15 +210,21 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				//gameRoom.BroadcastChat("MasterServer", "Just chatting");
 			}
 			gameRoom.startGame("game");
-			System.out.println("game started");
+			// for the first player possible moves 
+			
+			
+			
+			
+			
+			//System.out.println("game started");
 			
 			// for the first player possible moves 
 			
-			Card c = new Card();
+			/*Card c = new Card();
 			c = CardCon.getDiscardpile();
 			ArrayList<Card> Pcards = new ArrayList<Card>();
 			GameLogic G = new GameLogic();
-			System.out.println("above possible move  Player List at 0  "+ PlayerList.get(0).getName());
+			//System.out.println("above possible move  Player List at 0  "+ PlayerList.get(0).getName());
 			Pcards = G.possibleMoves(PlayerList.get(0));
 			
 			String cards= "*";
@@ -199,42 +233,79 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 				cards = cards + card.CardName() + "/";
 			}
 			
-			System.out.println("First player possible Moves::" + cards);
-			System.out.println("Whoes turn " + gameRoom.getNextTurnUser().getName());
+			//System.out.println("First player possible Moves::" + cards);
+			//System.out.println("Whoes turn " + gameRoom.getNextTurnUser().getName());
 			gameRoom.getJoinedUsers().get(0).SendChatNotification("Server", cards, gameRoom);
+			*/
 		 }
 		 
 	 }
 	 @Override
 	    public void handleMoveRequest(IUser sender, String moveData, HandlingResult result){
-		 System.out.println(sender.getName() +" send data "+ moveData);
-		 System.out.println("Card No: " + moveData.substring(1));
-		 for(int i=0; i<PlayerList.size(); i++)
+		 
+		 
+		 
+		 
+		 // For skip card and reverse card
+		 /*if(moveData.charAt(1)=='1' && (moveData.charAt(2)=='0' || moveData.charAt(2)=='1'))
 		 {
-			 if(PlayerList.get(i).getName()== sender.getName())
+			 result.doDefaultTurnLogic = false;
+			 result.sendResponse = false;
+			 result.sendNotification = false;
+			 if(moveData.charAt(1)=='1' && moveData.charAt(2)=='0')
 			 {
-				Card c= new Card();
-				 c.setColor_code(moveData.charAt(0)); 
-				 c.setCard_no(Integer.parseInt(moveData.substring(1)));
-				 System.out.println("Card to be removed "+ c.CardName());
-				 PlayerList.get(i).remove_Cards(moveData);
-				System.out.println("After Removing the cards Player Name "+ PlayerList.get(i).getName());
+				 System.out.println("Skip card given");
+				 GameLogic GameLogic = new GameLogic();
+				 curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
 				 
-				 for(int j=0; j<PlayerList.get(i).getList_of_cards().size(); j++)
-				 {
-					 System.out.println("####"+PlayerList.get(i).getList_of_cards().get(j).CardName());
-				 }
+				 int NextPlayer = GameLogic.getNextPlayerIndex(GameLogic.Rotation, GameLogic.getNextPlayerIndex(GameLogic.Rotation, curPlayerIndex));
+				 System.out.println("Nextplayer index is  " + NextPlayer + "Current player index is "+ curPlayerIndex);
 				 
-				 CardControl CardControl = new CardControl();
-				 CardControl.setDiscardpile(c);
-				 String Move= "@"+ moveData;
-				 for(int j=0; j<PlayerList.size(); j++)
+				 
+			 }
+			 else if(moveData.charAt(1)=='1' && moveData.charAt(2)=='1')
+			 {
+				 System.out.println("Reverse card is given");
+				 System.out.println("Index at move data "+ index);
+				 
+			 }
+		 }
+		 
+		 
+		 else
+		 {
+		
+			 //System.out.println(sender.getName() +" send data "+ moveData);
+			 //System.out.println("Card No: " + moveData.substring(1));
+			 for(int i=0; i<PlayerList.size(); i++)
+			 {
+				 if(PlayerList.get(i).getName()== sender.getName())
 				 {
-					 gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", Move, gameRoom);
+					 Card c= new Card();
+					 c.setColor_code(moveData.charAt(0)); 
+					 c.setCard_no(Integer.parseInt(moveData.substring(1)));
+					// System.out.println("Card to be removed "+ c.CardName());
+					 PlayerList.get(i).remove_Cards(moveData);
+					 //System.out.println("After Removing the cards Player Name "+ PlayerList.get(i).getName());
+					 
+					/* for(int j=0; j<PlayerList.get(i).getList_of_cards().size(); j++)
+					 {
+						 System.out.println("####"+PlayerList.get(i).getList_of_cards().get(j).CardName());
+					 }
+					 
+				
+					 CardControl CardControl = new CardControl();
+					 CardControl.setDiscardpile(c);
+					 String Move= "@"+ moveData;
+					 for(int j=0; j<PlayerList.size(); j++)
+					 {
+						 gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", Move, gameRoom);
+					 }
+				
 				 }
 			 }
 		 }
-		
+		*/
 		 
 	 }
 }
