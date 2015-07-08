@@ -39,6 +39,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	public int curPlayerIndex;
 	public Boolean StartBool = true;
 	public CardControl CardCon;
+	public GameLogic GameLogic;
 	
 	
 	public UnoRoomExtension(IZone izone, ITurnBasedRoom room){
@@ -211,32 +212,19 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			}
 			gameRoom.startGame("game");
 			// for the first player possible moves 
-			
-			
-			
-			
-			
-			//System.out.println("game started");
-			
-			// for the first player possible moves 
-			
-			/*Card c = new Card();
-			c = CardCon.getDiscardpile();
-			ArrayList<Card> Pcards = new ArrayList<Card>();
-			GameLogic G = new GameLogic();
-			//System.out.println("above possible move  Player List at 0  "+ PlayerList.get(0).getName());
-			Pcards = G.possibleMoves(PlayerList.get(0));
-			
-			String cards= "*";
-			for (Card card : Pcards) 
+			curPlayerIndex = 0;
+			ArrayList<Card> FirstPlayerCard = new ArrayList<Card>();
+			GameLogic = new GameLogic();
+			FirstPlayerCard = GameLogic.possibleMoves(DisCardPile, PlayerList.get(curPlayerIndex));
+			String PossibleCard = "*";
+			for(int i=0; i< FirstPlayerCard.size(); i++)
 			{
-				cards = cards + card.CardName() + "/";
+				PossibleCard = PossibleCard + FirstPlayerCard.get(i).CardName()+ "/" ;
 			}
+			gameRoom.getJoinedUsers().get(curPlayerIndex).SendChatNotification("Server", PossibleCard, gameRoom);
 			
-			//System.out.println("First player possible Moves::" + cards);
-			//System.out.println("Whoes turn " + gameRoom.getNextTurnUser().getName());
-			gameRoom.getJoinedUsers().get(0).SendChatNotification("Server", cards, gameRoom);
-			*/
+			
+			
 		 }
 		 
 	 }
