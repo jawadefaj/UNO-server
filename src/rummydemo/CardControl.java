@@ -9,14 +9,14 @@ public class CardControl {
 	public Card[] drawpile;
 	public Card discardpile;
 	public Card getDiscardpile() {
-		System.out.println("Inside get discard pile " + discardpile.CardName());
+		//System.out.println("Inside get discard pile " + discardpile.CardName());
 		return discardpile;
 	}
 
 	public void setDiscardpile(Card discardpile) {
 		this.discardpile = discardpile;
 		discardpilelist.add(discardpile);
-		System.out.println("Inside sET discard pile " + discardpile.CardName());
+		//System.out.println("Inside sET discard pile " + discardpile.CardName());
 	}
 
 	public int total_player;
@@ -136,5 +136,12 @@ public class CardControl {
 			cardList = discardpilelist;
 			Collections.shuffle(cardList);
 		}
+	}
+	public Card PickACard()
+	{
+		Card c = new Card();
+		c = cardList.get(0);
+		cardList.remove(c);
+		return c; 
 	}
 }

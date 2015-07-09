@@ -9,6 +9,8 @@ package rummydemo;
 	b10 = blue skip;
 	b11 = blue reverse;
 	b12 = blue +2;
+	W1 = color change wild card
+	W2 = Wild +4
 */
 public class Card {
 	

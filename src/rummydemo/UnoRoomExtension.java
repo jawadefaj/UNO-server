@@ -1,6 +1,8 @@
 package rummydemo;
 import java.awt.List;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Locale.Category;
 
 import com.shephertz.app42.server.idomain.BaseTurnRoomAdaptor;
 import com.shephertz.app42.server.idomain.HandlingResult;
@@ -10,6 +12,8 @@ import com.shephertz.app42.server.idomain.IUser;
 import com.shephertz.app42.server.idomain.IZone;
 
 import java.util.Collections;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
 import javassist.util.proxy.RuntimeSupport;
 
@@ -40,6 +44,7 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	public Boolean StartBool = true;
 	public CardControl CardCon;
 	public GameLogic GameLogic;
+	public int size;
 	
 	
 	public UnoRoomExtension(IZone izone, ITurnBasedRoom room){
@@ -52,122 +57,22 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	@Override
     public void handleChatRequest(IUser sender, String message, HandlingResult result){
 		
-		System.out.println(sender.getName()+ message);
-		
-		/*curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
-		
-		if(message.substring(0, 2).equals("PM"))
+		System.out.println(sender.getName() +" chat " + message);
+		if(message.charAt(0) == 'D' && message.charAt(1) == 'C')
 		{
-		
-			GameLogic gm = new GameLogic();
-			Player obp = new Player();
-			dscrd = message.substring(2);
-			//System.out.println(dscrd);
-			Card ob = new Card();
-			
-			if(message.substring(2,3).charAt(0) != 'W')
-			{
-				ob.setColor_code(message.substring(2,3).charAt(0));
-				ob.setCard_no(Integer.parseInt(message.substring(3))); 
-			}
-			
-			else if(message.substring(2,3).charAt(0) == 'W')
-			{
-				ob.setColor_code(message.substring(2,3).charAt(0));
-				ob.setCard_no(Integer.parseInt(message.substring(3,3))); 
-			}
-			
-			
-			int rotation = gm.getRotation(dscrd);
-			index = gm.getNextPlayerIndex(rotation, curPlayerIndex);	
-			System.out.println("Index in PM "+index);
-			//PlayerList.get(curPlayerIndex).getList_of_cards().remove(ob);
-		
-				posblMov = gm.possibleMoves(PlayerList.get(index));
-				//System.out.println("In else");
-				String mesg = "*";
-				for(int i=0; i<posblMov.size(); i++)
-				{
-					mesg = mesg + posblMov.get(i).CardName() + "/";
-				}
-				
-				gameRoom.getJoinedUsers().get(index).SendChatNotification("Server", mesg, gameRoom);
-				
-				if(dscrd.charAt(1) == '1' && dscrd.charAt(2) == '2')
-				{
-					// System.out.println("Insind draw 2 card cond");
-					 ChallengeHandling chHandle = new ChallengeHandling();
-					 Player player = new Player();
-					 for(int i=0; i<gameRoom.getJoinedUsers().size(); i++)
-					 {
-						 if(PlayerList.get(i).getName() == sender.getName())
-						 {
-							 chHandle.punishment("PLUS2", null, PlayerList.get(i));
-							 break;
-						 }
-					 }
-					 
-					 String drwcrd = "$$";
-					 for(int i=0; i<2; i++)
-					 {
-						 drwcrd += chHandle.draw2card.get(i).CardName() + "##";
-					 }
-					 //System.out.println("Draw cards" + drwcrd);
-					 gameRoom.getJoinedUsers().get(index).SendChatNotification("Server", drwcrd, gameRoom);
-				} 
-				 
-				/*else if(dscrd.charAt(0) == 'W' && dscrd.charAt(1) == '2')
-				{
-					 System.out.println("Insind draw 4 card cond");
-					 ChallengeHandling chHandle = new ChallengeHandling();
-					 Player player = new Player();
-					 for(int i=0; i<gameRoom.getJoinedUsers().size(); i++)
-					 {
-						 if(PlayerList.get(i).getName() == sender.getName())
-						 {
-							 chHandle.punishment("WILD4", null, PlayerList.get(i));
-							 break;
-						 }
-					 }
-					 
-					 String drwcrd = "$$";
-					 for(int i=0; i<2; i++)
-					 {
-						 drwcrd += chHandle.draw2card.get(i).CardName() + "##";
-					 }
-					 System.out.println("Draw cards" + drwcrd);
-					 gameRoom.getJoinedUsers().get(index).SendChatNotification("Server", drwcrd, gameRoom);
-				} 
-		//	}
+			gameRoom.getJoinedUsers().get(curPlayerIndex).SendChatNotification("Server",
+					"$$"+ CardCon.PickACard().CardName()+ "##", gameRoom);
 		}
 		
-		else if(message.substring(0).equals("DC"))
-		{
-			String dc = "$$";
-			Card obc = new Card();
-			CardControl obcc = new CardControl();
-			obc = obcc.cardList.remove(0); 
-			
-			PlayerList.get(curPlayerIndex).addCard(obc);
-			dc = dc + obc.CardName()+"##";
-			gameRoom.getJoinedUsers().get(curPlayerIndex).SendChatNotification("Server", dc, gameRoom);
-			
-		}
-		*/
+	 	
 	}
 	
 	
 	 @Override
 	    public void onTimerTick(long time){
-		
-		 //System.out.println("Nothing else matters");
-		 //System.out.println(gameRoom.getJoinedUsers().size()+" ....."+ gameRoom.getMaxUsers());
 		 if( gameRoom.getJoinedUsers().size() == gameRoom.getMaxUsers() && StartBool)
 		 {
-			 //GAME_STATUS = CardsConstants.RUNNING;
 			 StartBool = false;
-			 //CardControl CardCon= new CardControl();
-			 //System.out.println(gameRoom.getJoinedUsers().size()+"<><><>"+ gameRoom.getMaxUsers());
 			 for(int i=0; i< gameRoom.getMaxUsers(); i++)
 			 {
 				 Player p= new Player();
@@ -192,27 +97,21 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 			 String discard;
 			 for (Player player : PlayerList)
 			 {
-				//System.out.println("this is the player name"+player.getName());
+				Print(player);
 				msg="$$";
 				for(int i=0;i<player.getList_of_cards().size();i++)
 				{
-					//System.out.println(player.getList_of_cards().get(i).CardName());
 					msg= msg + player.getList_of_cards().get(i).CardName()+"##";
 				}
-				//System.out.println(msg);
 				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", msg, gameRoom);
 				discard = "D" + DisCardPile;
 				gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", discard, gameRoom);
 				j++;
-				
-				
-				//gameRoom.getJoinedUsers().get(0).SendChatNotification("Server", "this is a string", gameRoom);
-				//gameRoom.getJoinedUsers().get(1).SendChatNotification("Server", "this is a string", gameRoom);
-				//gameRoom.BroadcastChat("MasterServer", "Just chatting");
 			}
 			gameRoom.startGame("game");
 			// for the first player possible moves 
 			curPlayerIndex = 0;
+			size = PlayerList.size();
 			ArrayList<Card> FirstPlayerCard = new ArrayList<Card>();
 			GameLogic = new GameLogic();
 			FirstPlayerCard = GameLogic.possibleMoves(DisCardPile, PlayerList.get(curPlayerIndex));
@@ -230,70 +129,93 @@ public class UnoRoomExtension extends BaseTurnRoomAdaptor{
 	 }
 	 @Override
 	    public void handleMoveRequest(IUser sender, String moveData, HandlingResult result){
+		 	System.out.println(sender.getName()+ " Sended "+ moveData );
+		 	result.doDefaultTurnLogic = false;
+		 	if(moveData.charAt(0) == 'W')
+		 	{
+		 		System.out.println(sender.getName()+ " Sended "+ moveData );
+		 		int nextPlayerIndex = GameLogic.getNextPlayerIndex(GameLogic.getRotation(), curPlayerIndex, size);
+		 		char c = moveData.charAt(2);
+		 		moveData = moveData.substring(0, 1);
+		 		DisCardPile = moveData;
+		 		SendUpdate(c, nextPlayerIndex);
+		 		
+		 	}
+		 	System.out.println(sender.getName() + " Sended "+ moveData);
+		 	curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
+		 	PlayerList.get(curPlayerIndex).remove_Cards(moveData);
+		 	DisCardPile = moveData;
+		 	System.out.println("Card removed ");
+		 	//Print(PlayerList.get(curPlayerIndex));
+		 
+		 // if( skip card and reverse card) else () 
 		 
 		 
-		 
-		 
-		 // For skip card and reverse card
-		 /*if(moveData.charAt(1)=='1' && (moveData.charAt(2)=='0' || moveData.charAt(2)=='1'))
+		 if(moveData.charAt(1)=='1' && (moveData.charAt(2)=='0' || moveData.charAt(2)=='1' || moveData.charAt(2) == '2'))
 		 {
-			 result.doDefaultTurnLogic = false;
-			 result.sendResponse = false;
-			 result.sendNotification = false;
 			 if(moveData.charAt(1)=='1' && moveData.charAt(2)=='0')
 			 {
-				 System.out.println("Skip card given");
-				 GameLogic GameLogic = new GameLogic();
-				 curPlayerIndex = gameRoom.getJoinedUsers().indexOf(sender);
-				 
-				 int NextPlayer = GameLogic.getNextPlayerIndex(GameLogic.Rotation, GameLogic.getNextPlayerIndex(GameLogic.Rotation, curPlayerIndex));
-				 System.out.println("Nextplayer index is  " + NextPlayer + "Current player index is "+ curPlayerIndex);
-				 
+				 int nextPlayerIndex = GameLogic.getNextPlayerIndex(GameLogic.getRotation(), 
+						 GameLogic.getNextPlayerIndex(GameLogic.getRotation(), curPlayerIndex, size), size);
+				 SendUpdate(nextPlayerIndex);
 				 
 			 }
 			 else if(moveData.charAt(1)=='1' && moveData.charAt(2)=='1')
 			 {
-				 System.out.println("Reverse card is given");
-				 System.out.println("Index at move data "+ index);
-				 
+				 int nextPlayerIndex = GameLogic.getNextPlayerIndex(GameLogic.getRotation()* (-1), curPlayerIndex, size);
+				 SendUpdate(nextPlayerIndex);
+			 }
+			 else 
+			 {
+				 int nextPlayerIndex = GameLogic.getNextPlayerIndex(GameLogic.getRotation(), curPlayerIndex, size);
+				 String Add2Card ="$$" +CardCon.PickACard().CardName() + "##" + CardCon.PickACard().CardName()+"##";
+				 System.out.println(Add2Card);
+				 gameRoom.getJoinedUsers().get(nextPlayerIndex).SendChatNotification("Server", Add2Card, gameRoom);
+				 nextPlayerIndex = GameLogic.getNextPlayerIndex(GameLogic.getRotation(), nextPlayerIndex, size);
+				 SendUpdate(nextPlayerIndex);
 			 }
 		 }
-		 
-		 
 		 else
 		 {
-		
-			 //System.out.println(sender.getName() +" send data "+ moveData);
-			 //System.out.println("Card No: " + moveData.substring(1));
-			 for(int i=0; i<PlayerList.size(); i++)
-			 {
-				 if(PlayerList.get(i).getName()== sender.getName())
-				 {
-					 Card c= new Card();
-					 c.setColor_code(moveData.charAt(0)); 
-					 c.setCard_no(Integer.parseInt(moveData.substring(1)));
-					// System.out.println("Card to be removed "+ c.CardName());
-					 PlayerList.get(i).remove_Cards(moveData);
-					 //System.out.println("After Removing the cards Player Name "+ PlayerList.get(i).getName());
-					 
-					/* for(int j=0; j<PlayerList.get(i).getList_of_cards().size(); j++)
-					 {
-						 System.out.println("####"+PlayerList.get(i).getList_of_cards().get(j).CardName());
-					 }
-					 
-				
-					 CardControl CardControl = new CardControl();
-					 CardControl.setDiscardpile(c);
-					 String Move= "@"+ moveData;
-					 for(int j=0; j<PlayerList.size(); j++)
-					 {
-						 gameRoom.getJoinedUsers().get(j).SendChatNotification("Server", Move, gameRoom);
-					 }
-				
-				 }
-			 }
+			 int nextPlayerIndex = GameLogic.getNextPlayerIndex(GameLogic.getRotation(), curPlayerIndex, size);
+			 SendUpdate(nextPlayerIndex);
 		 }
-		*/
 		 
+		 
+	 }
+	 void Print (Player p)
+	 {
+		 System.out.println(p.getName()+ "->");
+		 for (int i = 0; i < p.getList_of_cards().size(); i++)
+		 {
+			 System.out.println(p.getList_of_cards().get(i).CardName());
+		 }
+	 }
+	 void SendUpdate(int nextPlayerIndex)
+	 {
+		 ArrayList<Card> possibleCards = new ArrayList<Card>();
+		 possibleCards = GameLogic.possibleMoves(DisCardPile, PlayerList.get(nextPlayerIndex));
+		 String PossibleCards = "*";
+		 for (int i = 0; i < possibleCards.size(); i++)
+		 {
+			 PossibleCards = PossibleCards + possibleCards.get(i).CardName() + "/";
+		 }
+		 gameRoom.getJoinedUsers().get(nextPlayerIndex).SendChatNotification("Server", PossibleCards, gameRoom);
+		 gameRoom.sendMoveUpdate(gameRoom.getJoinedUsers().get(nextPlayerIndex), "D"+ DisCardPile , "Server");
+		 curPlayerIndex = nextPlayerIndex;
+	 }
+	 
+	 void SendUpdate(char c ,int nextPlayerIndex) // for color selection possible cards 
+	 {
+		 ArrayList<Card> possibleCards = new ArrayList<Card>();
+		 possibleCards = GameLogic.possibleMoves(c, PlayerList.get(nextPlayerIndex)); // overloaded function
+		 String PossibleCards = "*";
+		 for (int i = 0; i < possibleCards.size(); i++)
+		 {
+			 PossibleCards = PossibleCards + possibleCards.get(i).CardName() + "/";
+		 }
+		 gameRoom.getJoinedUsers().get(nextPlayerIndex).SendChatNotification("Server", PossibleCards, gameRoom);
+		 gameRoom.sendMoveUpdate(gameRoom.getJoinedUsers().get(nextPlayerIndex), "D"+ DisCardPile , "Server");
+		 curPlayerIndex = nextPlayerIndex;
 	 }
 }

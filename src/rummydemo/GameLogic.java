@@ -15,15 +15,6 @@ public class GameLogic {
 
 	public int getRotation()
 	{
-		//CardControl obcardControl = new CardControl();
-		//Card card = new Card();
-		//card.setColor_code(DiscardPile.charAt(0));
-		//card.setCard_no(Integer.parseInt(DiscardPile.substring(1)));
-		//if(Integer.parseInt(DiscardPile.substring(1)) == 11)
-		//{
-		//	Rotation = Rotation*(-1);
-		//}
-		//System.out.println("Inside the get rotation " + Rotation);
 		return Rotation;
 	}
 	
@@ -31,9 +22,6 @@ public class GameLogic {
 	{
 		Player obP = new Player();
 		int nextPlayerIndex = 0;
-		//int size = UnoRoomExtension.PlayerList.size();
-		//System.out.println("player list size " + size);
-		
 		if(rotation == 1)
 		{
 			if(curPlayerIndex == size-1)
@@ -60,6 +48,22 @@ public class GameLogic {
 		
 		
 	}
+	public ArrayList<Card> possibleMoves(char c, Player curPlayer)
+	{
+		ArrayList<Card> possibleCards = new ArrayList<Card>();
+		ArrayList<Card> curPlayerCards = new ArrayList<Card>();
+		curPlayerCards = curPlayer.getList_of_cards();
+		for (int i = 0; i < curPlayerCards.size(); i++) 
+		{
+			if(curPlayerCards.get(i).getColor_code() == c)
+			{
+				possibleCards.add(curPlayerCards.get(i));
+			}
+			
+		}
+		return possibleCards;
+	}
+	
 	
 	public ArrayList<Card> possibleMoves(String DisCardPile ,Player curPlayer)
 	{
